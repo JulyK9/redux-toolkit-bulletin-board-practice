@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { nanoid } from "nanoid";
+import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
 import { sub } from "date-fns";
 import axios from "axios";
 
@@ -20,7 +19,7 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   }
 })
 
-export const addNewPost = createAsyncThunk('posts/addNewPost', async (initialPost) => {
+export const addNewPost = createAsyncThunk('posts/addNewPost', async () => {
   try {
     const response = await axios.post(POSTS_URL, initialPost)
     return response.data
@@ -80,7 +79,7 @@ const postsSlice = createSlice({
             wow: 0,
             heart: 0,
             rocket: 0,
-            coffee: 0
+            eyes: 0
           }
           return post;
         })
@@ -93,16 +92,14 @@ const postsSlice = createSlice({
         state.error = action.error.message
       })
       .addCase(addNewPost.fulfilled, (state, action) => {
-
-        action.payload.id= nanoid();
-        action.payload.userId = Number(action.payload.userId);
+        action.payload.userId = Number(action.payload.userId)
         action.payload.date = new Date().toISOString();
         action.payload.reactions = {
           thumbsUp: 0,
           wow: 0,
           heart: 0,
           rocket: 0,
-          coffee: 0
+          eyes: 0
         } 
         console.log(action.payload)
         state.posts.push(action.payload)

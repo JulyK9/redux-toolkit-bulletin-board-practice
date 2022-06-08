@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import { sub } from "date-fns";
 import axios from "axios";
 
-const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
+const POSTS_URL = 'https://koreanjson.com/posts';
 
 const initialState = {
   posts: [],
@@ -93,8 +93,7 @@ const postsSlice = createSlice({
         state.error = action.error.message
       })
       .addCase(addNewPost.fulfilled, (state, action) => {
-
-        action.payload.id= nanoid();
+        console.log(action.payload.id);
         action.payload.userId = Number(action.payload.userId);
         action.payload.date = new Date().toISOString();
         action.payload.reactions = {

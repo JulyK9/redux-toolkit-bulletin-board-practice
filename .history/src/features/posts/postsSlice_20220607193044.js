@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { nanoid } from "nanoid";
+import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
 import { sub } from "date-fns";
 import axios from "axios";
 
@@ -20,7 +19,13 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   }
 })
 
-export const addNewPost = createAsyncThunk('posts/addNewPost', async (initialPost) => {
+interface PostToAdd {
+  title: String;
+  body: String;
+  userId: Number;
+}
+
+export const addNewPost = createAsyncThunk('posts/addNewPost', async (initialPost: PostToAdd) => {
   try {
     const response = await axios.post(POSTS_URL, initialPost)
     return response.data
@@ -93,8 +98,7 @@ const postsSlice = createSlice({
         state.error = action.error.message
       })
       .addCase(addNewPost.fulfilled, (state, action) => {
-
-        action.payload.id= nanoid();
+      
         action.payload.userId = Number(action.payload.userId);
         action.payload.date = new Date().toISOString();
         action.payload.reactions = {
